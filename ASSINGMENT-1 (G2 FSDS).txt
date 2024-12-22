@@ -1,0 +1,94 @@
+ASSINGMENT-1(G16-SQL & POWERBI)
+==============================
+
+
+/*1. total number of employees*/
+ SELECT COUNT(*) FROM EMP;
+
+/*2. total number of departments*/
+SELECT COUNT(*) FROM DEPT;
+
+/*3. all the employees*/
+SELECT * FROM EMP;
+
+/*4. all the departments*/
+SELECT * FROM DEPT;
+
+/*5. total salary paid for all employees.*/
+SELECT SUM(SAL) FROM EMP;
+
+/*6. total commission paid to all employees.*/
+SELECT SUM(COMM) FROM EMP;
+
+/*7. Which job titles of the employees get commission paid.*/
+SELECT JOB FROM EMP WHERE COMM>0;
+
+/*8. System date*/
+SELECT SYSDATE;
+
+/*9. Average salary paid to all employees.*/
+SELECT AVG(SAL) FROM EMP;
+
+/*10. How many employees are there in each department?*/
+SELECT DEPTNO,COUNT(EMPNO) FROM EMP GROUP BY DEPTNO;
+
+/*11. Total salary of the employees in each department*/
+SELECT SUM(SAL),DEPTNO FROM EMP GROUP BY DEPTNO;
+
+/*12. How many employees are there under each job title?*/
+SELECT JOB,COUNT(EMPNO) FROM EMP GROUP BY JOB;
+
+/*13. Average salary paid for each job title.*/
+SELECT JOB,AVG(SAL) FROM EMP GROUP BY JOB;
+
+/*14. hire day, month, and year for each employee.*/
+SELECT ENAME, TO_CHAR(HIREDATE,'DAY') AS DAY, TO_CHAR(HIREDATE,'MONTH') AS MONTH,TO_CHAR(HIREDATE,'YYYY') AS YEAR FROM EMP;
+
+/*15. Sort the employee department wise.*/
+SELECT EMPNO,ENAME,DEPTNO FROM EMP ORDER BY DEPTNO,EMPNO;
+
+/*16. Sort the employee based on their job titles.*/
+SELECT ENAME,JOB FROM EMP ORDER BY ENAME;
+
+/*17. Sort the employee based on descending order of their salaries.*/
+SELECT ENAME,SAL FROM EMP ORDER BY SAL DESC,ENAME;
+
+/*18. Sort the employee ascending order of their department and descending order of their salary.*/
+SELECT ENAME, DEPTNO,SAL FROM EMP  ORDER BY DEPTNO,ENAME,SAL DESC;
+
+/*19. How many employees have their name with 6 characters.*/
+SELECT COUNT(*) FROM EMP WHERE LENGTH(ENAME)=6;
+
+/*20. Maximum and minimum salary paid.*/
+SELECT MAX(SAL),MIN(SAL) FROM EMP;
+
+/*21. Maximum, minimum, average and sum of salary paid under each department.*/
+SELECT DEPTNO,MAX(SAL),MIN(SAL),AVG(SAL),SUM(SAL) FROM EMP GROUP BY DEPTNO;
+
+/*22. Sort the employee based on their hire date.*/
+SELECT ENAME ,HIREDATE FROM EMP ORDER BY HIREDATE;
+
+/*23. Employee who joined latest*/
+SELECT ENAME,HIREDATE FROM emp WHERE hiredate = (SELECT MAX(hiredate) FROM emp);
+
+/*24. Who is the oldest employee in the organization based on their hire date?*/ 
+SELECT ENAME,HIREDATE FROM emp WHERE hiredate = (SELECT MIN(hiredate) FROM emp);
+
+/*25. Sort the employee based on their hire year (descending) and department (ascending)*/
+SELECT ENAME,TO_CHAR(HIREDATE,'YYYY'),DEPTNO FROM EMP ORDER BY HIREDATE DESC,DEPTNO;
+
+/*26. Employees who get salaries greater than or equal to the average salary of employees.*/
+SELECT ENAME, SAL, AVG(SAL) FROM EMP GROUP BY ENAME,SAL HAVING SAL >= (SELECT AVG(SAL)FROM EMP);
+
+/*27. Employees who get salary less than or equal to average salary of employees.*/
+SELECT ENAME, SAL, AVG(SAL) FROM EMP GROUP BY ENAME,SAL HAVING SAL <= (SELECT AVG(SAL)FROM EMP);
+
+/*28. Employees get salaries between 2000 and 4000.*/
+SELECT * FROM EMP WHERE SAL BETWEEN 2000 AND 4000;
+
+/*29. Which employees get the highest and lowest salary?*/
+SELECT ENAME,SAL FROM EMP  WHERE SAL=(SELECT MAX(SAL) FROM EMP) OR SAL=(SELECT MIN(SAL) FROM EMP);
+
+/*30. We need to celebrate the joining month of the employees. We plan to buy a gift for each of them. How many gifts do I need to buy for next month?*/
+SELECT COUNT(*) FROM EMP 
+WHERE EXTRACT(MONTH FROM HIREDATE) = EXTRACT(MONTH FROM ADD_MONTHS(SYSDATE,1) );
